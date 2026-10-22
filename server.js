@@ -11,6 +11,9 @@ let inventory = [
 app.get('/', (req, res) => {
     res.send('Product Inventory API is running!');
 });
+app.get('/products', (req, res) => {
+    res.json(inventory);
+});
 // Start server
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
