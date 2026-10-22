@@ -14,6 +14,17 @@ app.get('/', (req, res) => {
 app.get('/products', (req, res) => {
     res.json(inventory);
 });
+app.post('/products', (req, res) => {
+    const newProduct = {
+        id: inventory.length + 1,
+        name: req.body.name,
+        category: req.body.category,
+        price: req.body.price,
+        quantity: req.body.quantity
+    };
+    inventory.push(newProduct);
+    res.status(201).json({ message: "Product added successfully", product: newProduct });
+});
 // Start server
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
