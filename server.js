@@ -25,6 +25,27 @@ app.post('/products', (req, res) => {
     inventory.push(newProduct);
     res.status(201).json({ message: "Product added successfully", product: newProduct });
 });
+app.put('/products/:id', (req, res) => {
+    const productId = parseInt(req.params.id);
+    const product = inventory.find((p) => p.id === productId);
+    if (!product) {
+        return res.status(404).json({ message: 'Product not found' });
+    }
+    product.name = req.body.name || product.name;
+    product.category = req.body.category || product.category;
+    product.price = req.body.price !== undefined ? req.body.price : product.price;
+    product.quantity = req.body.quantity !== undefined ? req.body.quantity : product.quantity;
+    res.json({ message: 'Product updated successfully', product });
+});
+app.delete('/products/:id', (req, res) => {
+    const productId = parseInt(req.params.id);
+    const productIndex = inventory.findIndex((p) => p.id === productId);
+    if (productIndex === -1) {
+        return res.status(404).json({ message: 'Product not found' });
+    }
+    const deletedProduct = inventory.splice(productIndex, 1);
+    res.json({ message: 'Product deleted successfully', product: deletedProduct[0] });
+});
 // Start server
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
